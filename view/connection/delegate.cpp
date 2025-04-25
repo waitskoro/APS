@@ -38,7 +38,7 @@ void Delegate::paint(QPainter *painter,
                       bottomEdge, rect.right(), bottomEdge);
 
     // Draw name
-    QRect connectionName(0, 10, 100, 100);
+    QRect connectionName(0, 10, 180, 100);
     connectionName.moveTo(10, contentRect.top() - 5);
 
     f.setBold(true);
