@@ -7,17 +7,19 @@
 
 namespace Connection {
 
-class ConnectionParameters : public IConnectionParameters
+class XmlParser : public IConnectionParameters
 {
     Q_OBJECT
 public:
-    ConnectionParameters();
+    XmlParser();
 
     void remove(const qint32 id) override;
     ConnectionInfo save(ConnectionInfo info) override;
-    ConnectionInfo element(const qint32 id) override;
-    void changeElement(const qint32 id, ConnectionInfo info) override;
+    void change(const qint32 id, ConnectionInfo info) override;
+
     QVector<ConnectionInfo> elements() override;
+    ConnectionInfo element(const qint32 id) override;
+
 
 private:
     QFile *m_file;

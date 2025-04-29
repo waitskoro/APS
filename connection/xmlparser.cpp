@@ -1,16 +1,16 @@
-#include "connectionparameters.h"
+#include "xmlparser.h"
 #include <QDomNodeList>
 #include <QDebug>
 
 using namespace Connection;
 
-ConnectionParameters::ConnectionParameters()
+XmlParser::XmlParser()
     : IConnectionParameters()
 {
     m_path = "../connection_parameters.xml";
 }
 
-qint32 ConnectionParameters::generateNextId()
+qint32 XmlParser::generateNextId()
 {
     QVector<ConnectionInfo> existing = elements();
     if (existing.isEmpty())
@@ -24,7 +24,7 @@ qint32 ConnectionParameters::generateNextId()
     return maxId + 1;
 }
 
-ConnectionInfo ConnectionParameters::save(ConnectionInfo info)
+ConnectionInfo XmlParser::save(ConnectionInfo info)
 {
     if (info.id <= 0)
         info.id = generateNextId();
@@ -75,7 +75,7 @@ ConnectionInfo ConnectionParameters::save(ConnectionInfo info)
     return info;
 }
 
-QVector<ConnectionInfo> ConnectionParameters::elements()
+QVector<ConnectionInfo> XmlParser::elements()
 {
     QVector<ConnectionInfo> result;
     QFile xmlFile(m_path);
@@ -111,7 +111,7 @@ QVector<ConnectionInfo> ConnectionParameters::elements()
     return result;
 }
 
-ConnectionInfo ConnectionParameters::element(const qint32 id)
+ConnectionInfo XmlParser::element(const qint32 id)
 {
     for (auto &item : m_connectionElements) {
         if (item.id == id)
@@ -121,7 +121,7 @@ ConnectionInfo ConnectionParameters::element(const qint32 id)
     return {};
 }
 
-void ConnectionParameters::changeElement(const qint32 id, ConnectionInfo info)
+void XmlParser::change(const qint32 id, ConnectionInfo info)
 {
     for (auto &item : m_connectionElements) {
         if (item.id == id)
@@ -129,7 +129,7 @@ void ConnectionParameters::changeElement(const qint32 id, ConnectionInfo info)
     }
 }
 
-void ConnectionParameters::remove(const qint32 id)
+void XmlParser::remove(const qint32 id)
 {
     QFile xmlFile(m_path);
     QDomDocument document;

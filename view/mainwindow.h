@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QMessageBox>
 
 #include "authform.h"
 
@@ -9,6 +10,10 @@ namespace Ui {
 class MainWindow;
 }
 QT_END_NAMESPACE
+
+namespace Connection::Socket {
+class ITcpSocket;
+}
 
 namespace Connection::View {
 
@@ -24,6 +29,7 @@ private:
     Ui::MainWindow *ui;
 
     AuthForm *m_authForm;
+    QMessageBox *m_msgBox;
 };
 
 }

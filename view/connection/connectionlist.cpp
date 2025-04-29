@@ -1,7 +1,7 @@
 #include "connectionlist.h"
 
 #include "delegate.h"
-#include "connection/connectionparameters.h"
+#include "connection/xmlparser.h"
 
 #include <QDateTime>
 #include <QStandardItemModel>
@@ -10,7 +10,7 @@ using namespace Connection;
 
 ConnectionsList::ConnectionsList(QWidget *parent)
     : QListView(parent)
-    , m_connectionParameters(new ConnectionParameters())
+    , m_connectionParameters(new XmlParser())
 {
     auto *delegate = new View::Delegate(this);
     setModel(new QStandardItemModel(this));
@@ -62,7 +62,7 @@ void ConnectionsList::changeConnection(const qint32 last_id, const Connection::C
     removeConnectionInfo(last_id);
     auto newConnection = addConnection(info);
 
-    m_connectionParameters->changeElement(last_id, newConnection);
+    m_connectionParameters->change(last_id, newConnection);
 
     QStandardItemModel* stdModel = qobject_cast<QStandardItemModel*>(model());
     setCurrentIndex(model()->index(stdModel->rowCount() - 1, 0));
