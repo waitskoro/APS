@@ -69,11 +69,19 @@ AuthForm::AuthForm(QWidget *parent)
                 setEnabled(true);
                 emit m_connectionManager->cancel();
             });
+
+    connect(this,
+            &AuthForm::disconnected,
+            m_connectionManager,
+            [this](){
+                setVisible(true);
+                setEnabled(true);
+                m_connectionManager->disconnect();
+            });
 }
 
 void AuthForm::setEnabled(bool enable)
 {
-
     ui->save->setEnabled(enable);
     ui->remove->setEnabled(enable);
     ui->connect->setEnabled(enable);

@@ -39,6 +39,7 @@
     <property name="title">
      <string>HOME</string>
     </property>
+    <addaction name="exit"/>
    </widget>
    <widget class="QMenu" name="menu">
     <property name="title">
@@ -89,6 +90,11 @@
   <action name="action_4">
    <property name="text">
     <string>    Состояния каналов данных</string>
+   </property>
+  </action>
+  <action name="exit">
+   <property name="text">
+    <string>Отключиться</string>
    </property>
   </action>
  </widget>

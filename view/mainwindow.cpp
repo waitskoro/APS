@@ -42,6 +42,11 @@ MainWindow::MainWindow(QWidget *parent)
             });
 }
 
+void MainWindow::on_exit_triggered()
+{
+    emit m_authForm->disconnected();
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
