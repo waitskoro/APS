@@ -32,8 +32,20 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>23</height>
+     <height>28</height>
     </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <underline>false</underline>
+    </font>
    </property>
    <widget class="QMenu" name="menuHOME">
     <property name="title">
@@ -45,7 +57,7 @@
     <property name="title">
      <string>Команды</string>
     </property>
-    <addaction name="action"/>
+    <addaction name="transferOfTarget"/>
     <addaction name="action_2"/>
    </widget>
    <widget class="QMenu" name="menu_2">
@@ -56,11 +68,23 @@
     <addaction name="action_4"/>
    </widget>
    <widget class="QMenu" name="menu_3">
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <underline>false</underline>
+     </font>
+    </property>
     <property name="title">
      <string>Отсчеты</string>
     </property>
    </widget>
    <widget class="QMenu" name="menu_4">
+    <property name="font">
+     <font>
+      <pointsize>14</pointsize>
+      <underline>false</underline>
+     </font>
+    </property>
     <property name="title">
      <string>Графики</string>
     </property>
@@ -72,29 +96,54 @@
    <addaction name="menu_4"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="transferOfTarget">
    <property name="text">
     <string>    Передача целеуказаний</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
   <action name="action_2">
    <property name="text">
     <string>    Остановка приема</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
   </action>
   <action name="action_3">
    <property name="text">
     <string>    Состояния работоспособности</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
   <action name="action_4">
    <property name="text">
     <string>    Состояния каналов данных</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
   </action>
   <action name="exit">
    <property name="text">
     <string>Отключиться</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>12</pointsize>
+    </font>
    </property>
   </action>
  </widget>

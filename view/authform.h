@@ -47,6 +47,8 @@ signals:
     void unconnected();
     void disconnected();
 
+    void connectToHost(const QUrl ac, const QUrl p2);
+
 private:
     Ui::AuthForm *ui;
 

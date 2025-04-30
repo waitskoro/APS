@@ -15,6 +15,14 @@ namespace Connection::Socket {
 class ITcpSocket;
 }
 
+namespace Commands::View {
+class TargetDesignationsV;
+}
+
+namespace Commands {
+class TcpTargetDesignations;
+}
+
 namespace Connection::View {
 
 class MainWindow : public QMainWindow
@@ -27,12 +35,15 @@ public:
 
 public slots:
     void on_exit_triggered();
+    void on_transferOfTarget_triggered();
 
 private:
     Ui::MainWindow *ui;
 
     AuthForm *m_authForm;
     QMessageBox *m_msgBox;
+
+    Commands::TcpTargetDesignations *m_tcpTargetDesignations;
 };
 
 }

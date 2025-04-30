@@ -14,6 +14,9 @@ SOURCES += \
     connection/xmlparser.cpp \
     main.cpp \
     view/authform.cpp \
+    view/commands/targetdesignationmodel.cpp \
+    view/commands/targetdesignationsv.cpp \
+    view/commands/tcptargetdesignations.cpp \
     view/connection/connectionlist.cpp \
     view/connection/delegate.cpp \
     view/loader.cpp \
@@ -29,6 +32,10 @@ HEADERS += \
     connection/socket/tcpsocket.h \
     connection/xmlparser.h \
     view/authform.h \
+    view/commands/targetdesignationmodel.h \
+    view/commands/targetdesignationsinfo.h \
+    view/commands/targetdesignationsv.h \
+    view/commands/tcptargetdesignations.h \
     view/connection/connectionlist.h \
     view/connection/delegate.h \
     view/loader.h \
@@ -36,6 +43,7 @@ HEADERS += \
 
 FORMS += \
     view/authform.ui \
+    view/commands/targetdesignationsv.ui \
     view/loader.ui \
     view/mainwindow.ui \
 

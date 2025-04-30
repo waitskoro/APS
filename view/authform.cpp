@@ -127,7 +127,7 @@ void AuthForm::on_connect_clicked()
         QUrl url_ac = QUrl::fromUserInput(ui->tcp_ac->text());
         QUrl url_p2 = QUrl::fromUserInput(ui->tcp_p2->text());
 
-        m_connectionManager->connectToHost(url_ac, url_p2);
+        emit connectToHost(url_ac, url_p2);
     }
 }
 
