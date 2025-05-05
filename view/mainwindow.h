@@ -37,13 +37,18 @@ public slots:
     void on_exit_triggered();
     void on_transferOfTarget_triggered();
 
+signals:
+    void stateChanged();
+
 private:
     Ui::MainWindow *ui;
 
     AuthForm *m_authForm;
-    QMessageBox *m_msgBox;
 
+    ConnectionManager *m_connectionManager;
     Commands::TcpTargetDesignations *m_tcpTargetDesignations;
+
+    void onConnectionChanged(ConnectionStatus status);
 };
 
 }

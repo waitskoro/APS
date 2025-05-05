@@ -16,13 +16,15 @@ ConnectionManager::ConnectionManager(QObject *parent)
     QMetaObject::invokeMethod(this, &ConnectionManager::setupThread, Qt::QueuedConnection);
 
     m_thread->start();
+}
 
-    connect(this, &ConnectionManager::cancel, this,
-            [this]() {
-                if (m_reconnectTimer) m_reconnectTimer->stop();
-                if (m_timeoutTimer) m_timeoutTimer->stop();
-            },
-            Qt::QueuedConnection);
+void ConnectionManager::cancel()
+{
+    m_socketAc->disconnect();
+    m_socketP2->disconnect();
+
+    if (m_reconnectTimer) m_reconnectTimer->stop();
+    if (m_timeoutTimer) m_timeoutTimer->stop();
 }
 
 ConnectionManager::~ConnectionManager()
@@ -65,7 +67,7 @@ void ConnectionManager::connectToHost(const QUrl &ac, const QUrl &p2)
         m_reconnectTimer->start();
         m_timeoutTimer->start();
 
-        emit connecting();
+        emit stateChanged(Connecting);
     });
 }
 
@@ -78,7 +80,7 @@ void ConnectionManager::attemptConnect()
 
     if (m_socketAc->isConnected() && m_socketP2->isConnected()) {
         stopReconnecting();
-        emit connected();
+        emit stateChanged(Connected);
     }
 }
 
@@ -92,7 +94,7 @@ void ConnectionManager::attemptReconnect()
         attemptConnect();
     } else {
         stopReconnecting();
-        emit connected();
+        emit stateChanged(Connected);
     }
 }
 
@@ -102,7 +104,7 @@ void ConnectionManager::stopReconnecting()
     m_timeoutTimer->stop();
 
     if (!m_socketAc->isConnected() || !m_socketP2->isConnected()) {
-        emit connectionFailed();
+        emit stateChanged(Unconnected);
     }
 }
 
@@ -111,6 +113,6 @@ void ConnectionManager::disconnect()
     QMetaObject::invokeMethod(this, [this]() {
         m_socketAc->disconnect();
         m_socketP2->disconnect();
-        emit disconnected();
+        emit stateChanged(Disconnected);
     });
 }

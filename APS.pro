@@ -26,6 +26,7 @@ HEADERS += \
     connection/connectioninfo.h \
     connection/connectionmanager.h \
     connection/connectionstatus.h \
+    connection/enums.h \
     connection/iconnectionparameters.h \
     connection/socket/itcpsocket.h \
     connection/socket/socketinfo.h \

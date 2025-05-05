@@ -5,6 +5,8 @@
 #include <QTimer>
 #include "socket/tcpsocket.h"
 
+#include "connection/enums.h"
+
 namespace Connection {
 
 class ConnectionManager : public QObject
@@ -17,17 +19,15 @@ public:
     void connectToHost(const QUrl &ac, const QUrl &p2);
     void disconnect();
 
-signals:
-    void connecting();
-    void connected();
-    void disconnected();
-    void connectionFailed();
     void cancel();
 
 private slots:
     void attemptConnect();
     void attemptReconnect();
     void stopReconnecting();
+
+signals:
+    void stateChanged(ConnectionStatus status);
 
 private:
     void setupThread();

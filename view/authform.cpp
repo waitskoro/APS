@@ -3,9 +3,9 @@
 
 #include <QDateTime>
 #include <QBoxLayout>
+#include <QMessageBox>
 
 #include "loader.h"
-#include "connection/connectionmanager.h"
 
 using namespace Connection;
 using namespace Connection::View;
@@ -13,78 +13,72 @@ using namespace Connection::View;
 AuthForm::AuthForm(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AuthForm)
-    , m_connectionManager(new ConnectionManager())
-    , m_loader(new Loader(this))
+    , m_loader(new Loader())
 {
     ui->setupUi(this);
 
     m_connectionList = new ConnectionsList(this);
     m_connectionList->move(0, 50);
 
-    m_loader->setVisible(false);
-    ui->load->addWidget(m_loader);
-
     connect(m_connectionList,
             &ConnectionsList::selectedItemChanged,
             this,
             &AuthForm::onSelectedItemChanged);
 
-    connect(m_connectionManager,
-            &ConnectionManager::connectionFailed,
-            this,
-            [this](){
-                setEnabled(true);
-                m_loader->viewGif(false);
-                emit unconnected();
-            });
-
-    connect(m_connectionManager,
-            &ConnectionManager::disconnected,
-            this,
-            [this](){
-                setEnabled(true);
-            });
-
-    connect(m_connectionManager,
-            &ConnectionManager::connecting,
-            this,
-            [this](){
-                setEnabled(false);
-                m_loader->viewGif(true);
-                emit connecting();
-            });
-
-    connect(m_connectionManager,
-            &ConnectionManager::connected,
-            this,
-            [this](){
-                setVisible(false);
-                m_loader->viewGif(false);
-                emit connected();
-            });
-
     connect(m_loader,
             &Loader::cancel,
+            this,
             [this](){
                 setEnabled(true);
-                emit m_connectionManager->cancel();
+                m_loader->viewGif(false);
+                emit cancel();
             });
 
-    connect(this,
-            &AuthForm::disconnected,
-            m_connectionManager,
-            [this](){
-                setVisible(true);
-                setEnabled(true);
-                m_connectionManager->disconnect();
-            });
 }
 
-void AuthForm::setEnabled(bool enable)
+void AuthForm::onConnectionChanged(ConnectionStatus status)
 {
-    ui->save->setEnabled(enable);
-    ui->remove->setEnabled(enable);
-    ui->connect->setEnabled(enable);
+    switch (status) {
+        case Connecting: {
+            setEnabled(false);
+            m_loader->viewGif(true);
+            return;
+        }
+        case Connected: {
+            setVisible(false);
+            m_loader->viewGif(false);
+            break;
+        }
+        default: {
+            setVisible(true);
+            setEnabled(true);
+            break;
+        }
+    }
+
+    QMessageBox msgBox(this);
+    msgBox.setWindowTitle("Статус подключения");
+    msgBox.setStandardButtons(QMessageBox::Ok);
+    msgBox.setModal(true);
+
+    switch (status) {
+        case Unconnected:
+            msgBox.setText("Невозможно подключиться к сокету");
+            msgBox.setIcon(QMessageBox::Critical);
+            break;
+        case Connected:
+            msgBox.setText("Успешно подключено к сокетам");
+            msgBox.setIcon(QMessageBox::Information);
+            break;
+        case Disconnected:
+            msgBox.setText("Отключение от сокетов");
+            msgBox.setIcon(QMessageBox::Warning);
+            break;
+        default:
+            return;
+    }
+
+    msgBox.exec();
 }
 
 void AuthForm::onSelectedItemChanged(qint32 id)

@@ -6,6 +6,7 @@
 
 #include "connection/connectionlist.h"
 #include "connection/connectioninfo.h"
+#include "connection/enums.h"
 #include "connection/socket/socketinfo.h"
 
 namespace Connection {
@@ -40,13 +41,10 @@ public slots:
     void on_connect_clicked();
     void on_clearInputs_clicked();
 
+    void onConnectionChanged(ConnectionStatus status);
+
 signals:
     void cancel();
-    void connected();
-    void connecting();
-    void unconnected();
-    void disconnected();
-
     void connectToHost(const QUrl ac, const QUrl p2);
 
 private:
@@ -56,14 +54,11 @@ private:
 
     void onSelectedItemChanged(qint32 id);
     void setConnectionInfo(const ConnectionInfo info);
-    void onConnectionStateChanged(Socket::SocketType, QAbstractSocket::SocketState);
+
 
     ConnectionInfo m_selectedInfo;
 
     bool validateInput(const QString &text) const;
-    void setEnabled(bool enable);
-
-    ConnectionManager *m_connectionManager;
 
     Loader *m_loader;
 };

@@ -25,6 +25,9 @@
      <height>201</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(53, 132, 228);</string>
+   </property>
    <property name="text">
     <string/>
    </property>
@@ -63,6 +66,9 @@
      <width>151</width>
      <height>81</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(53, 132, 228);</string>
    </property>
    <property name="text">
     <string>Подключение</string>

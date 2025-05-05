@@ -5,16 +5,17 @@
 #include <QMessageBox>
 
 #include "commands/targetdesignationsv.h"
+#include "connection/connectionmanager.h"
 #include "commands/tcptargetdesignations.h"
 
-using namespace Connection::View;
 using namespace Commands::View;
+using namespace Connection::View;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_authForm(new AuthForm())
-    , m_msgBox(new QMessageBox())
+    , m_connectionManager(new ConnectionManager())
     , m_tcpTargetDesignations(new Commands::TcpTargetDesignations(this))
 {
     ui->setupUi(this);
@@ -26,33 +27,35 @@ MainWindow::MainWindow(QWidget *parent)
     ui->horizontalLayout->addWidget(m_authForm);
 
     connect(m_authForm,
-            &AuthForm::connected,
-            [this](){
-                ui->menubar->setEnabled(true);
-                m_msgBox->setText("Успешно подключено к сокетам");
-                m_msgBox->exec();
-            });
+            &AuthForm::connectToHost,
+            m_connectionManager,
+            &ConnectionManager::connectToHost);
 
     connect(m_authForm,
-            &AuthForm::disconnected,
-            [this](){
-                ui->menubar->setEnabled(false);
-                m_msgBox->setText("Отключение от сокетов");
-                m_msgBox->exec();
-            });
+            &AuthForm::cancel,
+            m_connectionManager,
+            &ConnectionManager::cancel);
 
-    connect(m_authForm,
-            &AuthForm::unconnected,
-            [this](){
-                ui->menubar->setEnabled(false);
-                m_msgBox->setText("Невозможно подключиться к сокету");
-                m_msgBox->exec();
-            });
+    connect(m_connectionManager,
+            &ConnectionManager::stateChanged,
+            this,
+            &MainWindow::onConnectionChanged);
+}
+
+void MainWindow::onConnectionChanged(ConnectionStatus status)
+{
+    if (status == Unconnected || status == Connecting || status == Disconnected) {
+        ui->menubar->setEnabled(false);
+    } else {
+        ui->menubar->setEnabled(true);
+    }
+
+    m_authForm->onConnectionChanged(status);
 }
 
 void MainWindow::on_exit_triggered()
 {
-    emit m_authForm->disconnected();
+    emit m_connectionManager->disconnect();
 }
 
 void MainWindow::on_transferOfTarget_triggered()

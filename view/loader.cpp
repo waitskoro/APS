@@ -22,7 +22,6 @@ Loader::Loader(QWidget *parent)
 
 void Loader::on_cancel_clicked()
 {
-    viewGif(false);
     emit cancel();
 }
 
