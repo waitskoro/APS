@@ -13,7 +13,7 @@ ConnectionManager::ConnectionManager(QObject *parent)
     m_attemptCount(0),
     m_threadInitialized(false)
 {
-    this->moveToThread(m_thread);
+    moveToThread(m_thread);
     QMetaObject::invokeMethod(this, &ConnectionManager::setupThread, Qt::QueuedConnection);
 
     m_thread->start();
@@ -49,6 +49,11 @@ void ConnectionManager::setupThread()
     connect(m_timeoutTimer, &QTimer::timeout, this, &ConnectionManager::stopReconnecting);
 
     m_threadInitialized = true;
+
+    connect(m_socketAc,
+            &TcpSocket::dataRecevied,
+            this,
+            &ConnectionManager::onSocketAcPacketReceived);
 }
 
 void ConnectionManager::sendTargetDesign(TargetDesignations target)
@@ -61,13 +66,9 @@ void ConnectionManager::sendTargetDesign(TargetDesignations target)
     QByteArray message_bytes;
 
     header_bytes = header.serializeStruct();
-    qDebug() << target.planStartTime;
-    qDebug() << target.planEndTime;
     QDataStream stream(&message_bytes, QIODevice::WriteOnly);
     stream.setByteOrder(QDataStream::LittleEndian);
     stream << target;
-    qDebug() << "Message data size";
-    qDebug() << message_bytes.size();
 
     m_socketAc->send(header_bytes, message_bytes);
 }
@@ -137,4 +138,17 @@ void ConnectionManager::disconnect()
         m_socketP2->disconnect();
         emit stateChanged(Disconnected);
     });
+}
+
+void ConnectionManager::onSocketAcPacketReceived(Packet packet)
+{
+    if (packet.header.msg_type == 0x80) {
+        QDataStream stream(&packet.data, QIODevice::ReadOnly);
+        stream.setByteOrder(QDataStream::LittleEndian);
+
+        ExecutedTheCommand result;
+        stream >> result;
+
+        emit executedTheCommandRecevied(result);
+    }
 }

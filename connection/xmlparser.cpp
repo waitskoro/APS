@@ -5,7 +5,7 @@
 using namespace Connection;
 
 XmlParser::XmlParser()
-    : IConnectionParameters()
+    : QObject()
 {
     m_path = "../connection_parameters.xml";
 }

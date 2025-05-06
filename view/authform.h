@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QTcpSocket>
 
-#include "connection/enums.h"
+#include "common/enums.h"
 #include "connection/connectionlist.h"
 #include "connection/connectioninfo.h"
 
@@ -21,9 +21,11 @@ namespace Connection::Socket {
 class ITcpSocket;
 }
 
-namespace Connection::View {
-
+namespace Common::View {
 class Loader;
+}
+
+namespace Connection::View {
 
 class AuthForm : public QWidget
 {
@@ -53,7 +55,7 @@ private:
     bool validateInput(const QString &text) const;
     void setConnectionInfo(const ConnectionInfo info);
 
-    Loader *m_loader;
+    Common::View::Loader *m_loader;
     ConnectionInfo m_selectedInfo;
     Connection::ConnectionsList *m_connectionList;
 };

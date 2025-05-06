@@ -3,10 +3,11 @@
 #include <QObject>
 #include <QThread>
 #include <QTimer>
-#include "socket/tcpsocket.h"
 
-#include "connection/enums.h"
-#include "view/commands/targetdesignationsinfo.h"
+#include "common/enums.h"
+#include "socket/tcpsocket.h"
+#include "common/messagesinfo.h"
+#include "commands/targetdesignation//targetdesignationsinfo.h"
 
 namespace Connection {
 
@@ -30,6 +31,7 @@ private slots:
 signals:
     void messageReady(QByteArray, QByteArray);
     void stateChanged(ConnectionStatus status);
+    void executedTheCommandRecevied(ExecutedTheCommand result);
 
 private:
     void setupThread();
@@ -37,13 +39,18 @@ private:
 
     TcpSocket *m_socketAc;
     TcpSocket *m_socketP2;
+
     QThread *m_thread;
     QTimer *m_timeoutTimer;
     QTimer *m_reconnectTimer;
+
     QUrl m_acUrl;
     QUrl m_p2Url;
+
     int m_attemptCount;
-    bool m_threadInitialized;
+    bool m_threadInitialized;\
+
+    void onSocketAcPacketReceived(Packet packet);
 };
 
 }

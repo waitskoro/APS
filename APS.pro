@@ -22,18 +22,19 @@ SOURCES += \
     view/mainwindow.cpp
 
 HEADERS += \
+    commands/targetdesignation/targetdesignationsinfo.h \
+    common/enums.h \
+    common/helper.h \
+    common/messagesinfo.h \
     connection/connectioninfo.h \
     connection/connectionmanager.h \
-    connection/connectionstatus.h \
     connection/enums.h \
-    connection/iconnectionparameters.h \
     connection/socket/itcpsocket.h \
     connection/socket/socketinfo.h \
     connection/socket/tcpsocket.h \
     connection/xmlparser.h \
     view/authform.h \
     view/commands/targetdesignationmodel.h \
-    view/commands/targetdesignationsinfo.h \
     view/commands/targetdesignationsv.h \
     view/connection/connectionlist.h \
     view/connection/delegate.h \

@@ -4,7 +4,7 @@
 #include <QMovie>
 #include <QLabel>
 
-using namespace Connection::View;
+using namespace Common::View;
 
 Loader::Loader(QWidget *parent)
     : QWidget(parent)
@@ -18,6 +18,16 @@ Loader::Loader(QWidget *parent)
 
     ui->label->setMovie (m_movie);
     m_movie->setScaledSize(QSize(50, 50));
+}
+
+void Loader::setText(QString &text)
+{
+    ui->text->setText(text);
+}
+
+void Loader::setVisibleButtonOk(bool visible)
+{
+    ui->cancel->setVisible(visible);
 }
 
 void Loader::on_cancel_clicked()

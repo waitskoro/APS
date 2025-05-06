@@ -1,6 +1,5 @@
 #pragma once
 
-#include <QDate>
 #include <QDataStream>
 
 namespace Commands {

@@ -6,7 +6,7 @@
 
 namespace Connection {
 
-class IConnectionParameters;
+class XmlParser;
 
 class ConnectionsList : public QListView
 {
@@ -34,7 +34,7 @@ public slots:
     void changeConnection(const qint32 last_id, const Connection::ConnectionInfo info);
 
 private:
-    Connection::IConnectionParameters *m_connectionParameters;
+    Connection::XmlParser *m_xmlData;
 };
 
 }

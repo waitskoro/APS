@@ -23,8 +23,8 @@ public:
     virtual bool isConnected() = 0;
 
 signals:
-    void dataRecevied(Packet);
     void stateChanged();
+    void dataRecevied(Packet);
     void errorOccured(QAbstractSocket::SocketError);
 };
 

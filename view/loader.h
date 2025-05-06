@@ -8,7 +8,7 @@ namespace Ui {
 class Loader;
 }
 
-namespace Connection::View {
+namespace Common::View {
 
 class Loader : public QWidget
 {
@@ -19,6 +19,8 @@ public:
     ~Loader();
 
     void viewGif(bool visible);
+    void setText(QString &text);
+    void setVisibleButtonOk(bool visible);
 
 public slots:
     void on_cancel_clicked();

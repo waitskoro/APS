@@ -8,6 +8,7 @@
 #include "loader.h"
 
 using namespace Connection;
+using namespace Common::View;
 using namespace Connection::View;
 
 AuthForm::AuthForm(QWidget *parent)
@@ -64,11 +65,6 @@ void AuthForm::onConnectionChanged(ConnectionStatus status)
         case Unconnected:
             msgBox.setText("Невозможно подключиться к сокету");
             msgBox.setIcon(QMessageBox::Critical);
-            m_loader->viewGif(false);
-            break;
-        case Connected:
-            msgBox.setText("Успешно подключено к сокетам");
-            msgBox.setIcon(QMessageBox::Information);
             m_loader->viewGif(false);
             break;
         case Disconnected:

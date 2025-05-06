@@ -3,23 +3,22 @@
 #include <QFile>
 #include <QObject>
 
-#include "iconnectionparameters.h"
+#include "connectioninfo.h"
 
 namespace Connection {
 
-class XmlParser : public IConnectionParameters
+class XmlParser : public QObject
 {
     Q_OBJECT
 public:
     XmlParser();
 
-    void remove(const qint32 id) override;
-    ConnectionInfo save(ConnectionInfo info) override;
-    void change(const qint32 id, ConnectionInfo info) override;
+    void remove(const qint32 id);
+    ConnectionInfo save(ConnectionInfo info);
+    void change(const qint32 id, ConnectionInfo info);
 
-    QVector<ConnectionInfo> elements() override;
-    ConnectionInfo element(const qint32 id) override;
-
+    QVector<ConnectionInfo> elements();
+    ConnectionInfo element(const qint32 id);
 
 private:
     QFile *m_file;

@@ -40,19 +40,30 @@ MainWindow::MainWindow(QWidget *parent)
             this,
             &MainWindow::onConnectionChanged);
 
+    connect(m_connectionManager,
+            &ConnectionManager::executedTheCommandRecevied,
+            m_transferOfTargetV,
+            &TargetDesignationsV::onExecutedTheCommandRecevied);
+
     connect(m_transferOfTargetV,
             &TargetDesignationsV::sendTarget,
             m_connectionManager,
             &ConnectionManager::sendTargetDesign);
+
+    connect(m_transferOfTargetV,
+            &TargetDesignationsV::closedEvent,
+            [this](){
+                setEnabled(true);
+                m_transferOfTargetV->close();
+            });
 }
 
 void MainWindow::onConnectionChanged(ConnectionStatus status)
 {
-    if (status == Unconnected || status == Connecting || status == Disconnected) {
+    if (status == Unconnected || status == Connecting || status == Disconnected)
         ui->menubar->setEnabled(false);
-    } else {
+    else
         ui->menubar->setEnabled(true);
-    }
 
     m_authForm->onConnectionChanged(status);
 }
@@ -64,6 +75,7 @@ void MainWindow::on_exit_triggered()
 
 void MainWindow::on_transferOfTarget_triggered()
 {
+    setEnabled(false);
     m_transferOfTargetV->show();
 }
 
