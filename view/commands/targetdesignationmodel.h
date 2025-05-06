@@ -16,10 +16,13 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
-    void append(short newCoordinates[2]);
+    void append(short azimuth, short elevation);
+    void append(const std::array<short, 2>& newCoordinates);
+
+    const std::vector<std::array<short, 2>>& coordinates() const;
 
 private:
-    std::vector<std::array<short, 2>>* m_values;
+    std::vector<std::array<short, 2>> m_values;
 };
 
 }

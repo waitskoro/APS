@@ -294,22 +294,6 @@
     <string>Добавить</string>
    </property>
   </widget>
-  <widget class="QTableView" name="coordinates">
-   <property name="geometry">
-    <rect>
-     <x>120</x>
-     <y>370</y>
-     <width>600</width>
-     <height>200</height>
-    </rect>
-   </property>
-   <property name="styleSheet">
-    <string notr="true">background-color: #E9E9E9</string>
-   </property>
-   <attribute name="horizontalHeaderDefaultSectionSize">
-    <number>299</number>
-   </attribute>
-  </widget>
   <widget class="QLabel" name="label_12">
    <property name="geometry">
     <rect>
@@ -418,15 +402,8 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="3">
-     <widget class="QLineEdit" name="numberOfTargetDesignations">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QLabel" name="label_5">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
         <pointsize>12</pointsize>
@@ -436,7 +413,7 @@
        <string notr="true">color: black</string>
       </property>
       <property name="text">
-       <string>Номер КА в системе</string>
+       <string>Номер канала данных</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -461,38 +438,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="polarization">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="3">
-     <widget class="QLineEdit" name="centerFrequency">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QLabel" name="label_4">
-      <property name="font">
-       <font>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: black</string>
-      </property>
-      <property name="text">
-       <string>Количество целеуказаний</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="1">
      <widget class="QComboBox" name="channelNumbers">
       <property name="styleSheet">
@@ -500,14 +445,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QLineEdit" name="numberOfTheSpacecraft">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
+    <item row="0" column="2">
      <widget class="QLabel" name="label_10">
       <property name="font">
        <font>
@@ -525,8 +463,22 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_3">
+    <item row="0" column="3">
+     <widget class="QLineEdit" name="centerFrequency">
+      <property name="styleSheet">
+       <string notr="true">background-color: #979090</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="polarization">
+      <property name="styleSheet">
+       <string notr="true">background-color: #979090</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_5">
       <property name="font">
        <font>
         <pointsize>12</pointsize>
@@ -536,14 +488,21 @@
        <string notr="true">color: black</string>
       </property>
       <property name="text">
-       <string>Номер канала данных</string>
+       <string>Номер КА в системе</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="numberOfTheSpacecraft">
+      <property name="styleSheet">
+       <string notr="true">background-color: #979090</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
      <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
@@ -561,14 +520,10 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="planStartTime">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
+    <item row="2" column="1">
+     <widget class="QDateEdit" name="startTime"/>
     </item>
-    <item row="3" column="2">
+    <item row="2" column="2">
      <widget class="QLabel" name="label_7">
       <property name="font">
        <font>
@@ -586,14 +541,20 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="3">
-     <widget class="QLineEdit" name="planEndTime">
-      <property name="styleSheet">
-       <string notr="true">background-color: #979090</string>
-      </property>
-     </widget>
+    <item row="2" column="3">
+     <widget class="QDateEdit" name="endTime"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QTableView" name="coordinates">
+   <property name="geometry">
+    <rect>
+     <x>110</x>
+     <y>390</y>
+     <width>611</width>
+     <height>192</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

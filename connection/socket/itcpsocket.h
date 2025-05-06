@@ -3,11 +3,9 @@
 #include <QUrl>
 #include <QTcpSocket>
 
-#include "connection/socket/socketinfo.h"
+#include "socketinfo.h"
 
-namespace Connection::Socket {
-
-struct Packet;
+namespace Connection {
 
 class ITcpSocket : public QObject
 {

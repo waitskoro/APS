@@ -6,7 +6,6 @@
 
 #include "commands/targetdesignationsv.h"
 #include "connection/connectionmanager.h"
-#include "commands/tcptargetdesignations.h"
 
 using namespace Commands::View;
 using namespace Connection::View;
@@ -15,8 +14,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , m_authForm(new AuthForm())
-    , m_connectionManager(new ConnectionManager())
-    , m_tcpTargetDesignations(new Commands::TcpTargetDesignations(this))
+    , m_connectionManager(new ConnectionManager(this))
+    , m_transferOfTargetV(new TargetDesignationsV())
 {
     ui->setupUi(this);
 
@@ -40,6 +39,11 @@ MainWindow::MainWindow(QWidget *parent)
             &ConnectionManager::stateChanged,
             this,
             &MainWindow::onConnectionChanged);
+
+    connect(m_transferOfTargetV,
+            &TargetDesignationsV::sendTarget,
+            m_connectionManager,
+            &ConnectionManager::sendTargetDesign);
 }
 
 void MainWindow::onConnectionChanged(ConnectionStatus status)
@@ -60,8 +64,7 @@ void MainWindow::on_exit_triggered()
 
 void MainWindow::on_transferOfTarget_triggered()
 {
-    TargetDesignationsV *transferOfTarget = new TargetDesignationsV();
-    transferOfTarget->show();
+    m_transferOfTargetV->show();
 }
 
 MainWindow::~MainWindow()

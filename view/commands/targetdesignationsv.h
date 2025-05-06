@@ -1,5 +1,7 @@
 #pragma once
 
+#include "targetdesignationsinfo.h"
+
 #include <QWidget>
 
 namespace Ui {
@@ -7,7 +9,6 @@ class TransferOfTarget;
 }
 
 namespace Commands {
-class TargetDesignations;
 class TargetDesignationModel;
 }
 
@@ -21,6 +22,9 @@ public:
     explicit TargetDesignationsV(QWidget *parent = nullptr);
     ~TargetDesignationsV();
 
+signals:
+    void sendTarget(TargetDesignations target);
+
 public slots:
     void on_addAzimut_clicked();
     void on_createTarget_clicked();
@@ -29,7 +33,6 @@ private:
     int fromStringToInt(QString str);
 
     Ui::TransferOfTarget *ui;
-    TargetDesignations *m_info;
     TargetDesignationModel *m_model;
 };
 

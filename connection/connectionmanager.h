@@ -6,6 +6,7 @@
 #include "socket/tcpsocket.h"
 
 #include "connection/enums.h"
+#include "view/commands/targetdesignationsinfo.h"
 
 namespace Connection {
 
@@ -16,10 +17,10 @@ public:
     explicit ConnectionManager(QObject *parent = nullptr);
     ~ConnectionManager();
 
-    void connectToHost(const QUrl &ac, const QUrl &p2);
-    void disconnect();
-
     void cancel();
+    void disconnect();
+    void connectToHost(const QUrl &ac, const QUrl &p2);
+    void sendTargetDesign(Commands::TargetDesignations info);
 
 private slots:
     void attemptConnect();
@@ -27,14 +28,15 @@ private slots:
     void stopReconnecting();
 
 signals:
+    void messageReady(QByteArray, QByteArray);
     void stateChanged(ConnectionStatus status);
 
 private:
     void setupThread();
     void doConnect(const QUrl &ac, const QUrl &p2);
 
-    Socket::TcpSocket *m_socketAc;
-    Socket::TcpSocket *m_socketP2;
+    TcpSocket *m_socketAc;
+    TcpSocket *m_socketP2;
     QThread *m_thread;
     QTimer *m_timeoutTimer;
     QTimer *m_reconnectTimer;

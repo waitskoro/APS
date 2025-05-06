@@ -1,5 +1,6 @@
 #include "connectionmanager.h"
 
+using namespace Commands;
 using namespace Connection;
 
 ConnectionManager::ConnectionManager(QObject *parent)
@@ -35,8 +36,8 @@ ConnectionManager::~ConnectionManager()
 
 void ConnectionManager::setupThread()
 {
-    m_socketAc = new Socket::TcpSocket();
-    m_socketP2 = new Socket::TcpSocket();
+    m_socketAc = new TcpSocket();
+    m_socketP2 = new TcpSocket();
 
     m_timeoutTimer = new QTimer();
     m_reconnectTimer = new QTimer();
@@ -48,6 +49,27 @@ void ConnectionManager::setupThread()
     connect(m_timeoutTimer, &QTimer::timeout, this, &ConnectionManager::stopReconnecting);
 
     m_threadInitialized = true;
+}
+
+void ConnectionManager::sendTargetDesign(TargetDesignations target)
+{
+    Header header;
+    header.msg_type = 0x01;
+    header.countBytes = No_alignment_size::cel + 4 * target.count;
+
+    QByteArray header_bytes;
+    QByteArray message_bytes;
+
+    header_bytes = header.serializeStruct();
+    qDebug() << target.planStartTime;
+    qDebug() << target.planEndTime;
+    QDataStream stream(&message_bytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
+    stream << target;
+    qDebug() << "Message data size";
+    qDebug() << message_bytes.size();
+
+    m_socketAc->send(header_bytes, message_bytes);
 }
 
 void ConnectionManager::connectToHost(const QUrl &ac, const QUrl &p2)

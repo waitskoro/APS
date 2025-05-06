@@ -2,13 +2,11 @@
 
 #include <QThread>
 
-#include "socketinfo.h"
-
 namespace {
     qint32 headerSize = 12;
 }
 
-using namespace Connection::Socket;
+using namespace Connection;
 
 TcpSocket::TcpSocket()
     : ITcpSocket()

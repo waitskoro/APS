@@ -16,7 +16,6 @@ SOURCES += \
     view/authform.cpp \
     view/commands/targetdesignationmodel.cpp \
     view/commands/targetdesignationsv.cpp \
-    view/commands/tcptargetdesignations.cpp \
     view/connection/connectionlist.cpp \
     view/connection/delegate.cpp \
     view/loader.cpp \
@@ -36,7 +35,6 @@ HEADERS += \
     view/commands/targetdesignationmodel.h \
     view/commands/targetdesignationsinfo.h \
     view/commands/targetdesignationsv.h \
-    view/commands/tcptargetdesignations.h \
     view/connection/connectionlist.h \
     view/connection/delegate.h \
     view/loader.h \

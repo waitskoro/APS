@@ -3,10 +3,9 @@
 #include <QObject>
 
 #include "itcpsocket.h"
+#include "socketinfo.h"
 
-namespace Connection::Socket {
-
-struct Header;
+namespace Connection {
 
 class TcpSocket : public ITcpSocket
 {

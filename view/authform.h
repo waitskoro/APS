@@ -4,10 +4,9 @@
 #include <QWidget>
 #include <QTcpSocket>
 
+#include "connection/enums.h"
 #include "connection/connectionlist.h"
 #include "connection/connectioninfo.h"
-#include "connection/enums.h"
-#include "connection/socket/socketinfo.h"
 
 namespace Connection {
 class ConnectionManager;
@@ -50,17 +49,13 @@ signals:
 private:
     Ui::AuthForm *ui;
 
-    Connection::ConnectionsList *m_connectionList;
-
     void onSelectedItemChanged(qint32 id);
+    bool validateInput(const QString &text) const;
     void setConnectionInfo(const ConnectionInfo info);
 
-
-    ConnectionInfo m_selectedInfo;
-
-    bool validateInput(const QString &text) const;
-
     Loader *m_loader;
+    ConnectionInfo m_selectedInfo;
+    Connection::ConnectionsList *m_connectionList;
 };
 
 }

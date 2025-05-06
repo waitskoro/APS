@@ -33,7 +33,6 @@ AuthForm::AuthForm(QWidget *parent)
                 m_loader->viewGif(false);
                 emit cancel();
             });
-
 }
 
 void AuthForm::onConnectionChanged(ConnectionStatus status)
@@ -65,14 +64,17 @@ void AuthForm::onConnectionChanged(ConnectionStatus status)
         case Unconnected:
             msgBox.setText("Невозможно подключиться к сокету");
             msgBox.setIcon(QMessageBox::Critical);
+            m_loader->viewGif(false);
             break;
         case Connected:
             msgBox.setText("Успешно подключено к сокетам");
             msgBox.setIcon(QMessageBox::Information);
+            m_loader->viewGif(false);
             break;
         case Disconnected:
             msgBox.setText("Отключение от сокетов");
             msgBox.setIcon(QMessageBox::Warning);
+            m_loader->viewGif(false);
             break;
         default:
             return;

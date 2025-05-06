@@ -11,17 +11,12 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-namespace Connection::Socket {
-class ITcpSocket;
-}
 
 namespace Commands::View {
 class TargetDesignationsV;
 }
 
-namespace Commands {
-class TcpTargetDesignations;
-}
+using namespace Commands::View;
 
 namespace Connection::View {
 
@@ -44,9 +39,8 @@ private:
     Ui::MainWindow *ui;
 
     AuthForm *m_authForm;
-
     ConnectionManager *m_connectionManager;
-    Commands::TcpTargetDesignations *m_tcpTargetDesignations;
+    TargetDesignationsV *m_transferOfTargetV;
 
     void onConnectionChanged(ConnectionStatus status);
 };

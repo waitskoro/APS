@@ -3,24 +3,28 @@
 #include <QByteArray>
 #include <QDataStream>
 
-namespace Connection::Socket {
+namespace Connection {
 
 struct Header {
     uint16_t version = 0xAC01;
     uint8_t msg_type;
     uint8_t zero = 0x00;
-    uint32_t timeCreated;
+    double timeCreated;
     uint32_t countBytes;
 
     QByteArray serializeStruct() {
         QByteArray data;
         QDataStream stream(&data, QDataStream::WriteOnly);
 
-        stream.setByteOrder(QDataStream::LittleEndian);
+        stream.setByteOrder(QDataStream::BigEndian);
         stream << version << msg_type << zero << timeCreated << countBytes;
 
         return data;
     }
+};
+
+namespace No_alignment_size {
+const quint8 cel = 26;
 };
 
 enum SocketType {
