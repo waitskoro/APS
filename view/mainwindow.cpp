@@ -4,10 +4,12 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 
+#include "main/receivingсhecklist.h"
 #include "commands/targetdesignationsv.h"
 #include "connection/connectionmanager.h"
 
 using namespace Commands::View;
+using namespace Receiving::View;
 using namespace Connection::View;
 
 MainWindow::MainWindow(QWidget *parent)
@@ -18,8 +20,21 @@ MainWindow::MainWindow(QWidget *parent)
     , m_transferOfTargetV(new TargetDesignationsV())
 {
     ui->setupUi(this);
+    m_receivingChecklist = new ReceivingChecklist(this);
+    m_receivingChecklist->move(50, 120);
+    m_receivingChecklist->setStyleSheet("background-color: #F6F6F6");
+    m_receivingChecklist->setVisible(false);
 
-    // ui->menubar->setEnabled(false);
+    Receiving::ReceivingMessage msg;
+    m_receivingChecklist->addMessage(msg);
+    m_receivingChecklist->addMessage(msg);
+    m_receivingChecklist->addMessage(msg);
+
+    ui->label->setVisible(false);
+    ui->label_2->setVisible(false);
+    ui->menubar->setEnabled(false);
+    ui->activeChannel->setVisible(false);
+
     ui->menubar->setStyleSheet("background-color: #E8E7E7");
     ui->menubar->setStyleSheet("QMenu::item:selected { background-color: #8D8D8D; }");
 
@@ -53,17 +68,34 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_transferOfTargetV,
             &TargetDesignationsV::closedEvent,
             [this](){
-                setEnabled(true);
                 m_transferOfTargetV->close();
+
+                setEnabled(true);
+                ui->label->setVisible(true);
+                ui->label_2->setVisible(true);
+                ui->menubar->setEnabled(true);
+                ui->activeChannel->setVisible(true);
+
+                m_receivingChecklist->setVisible(true);
             });
 }
 
 void MainWindow::onConnectionChanged(ConnectionStatus status)
 {
-    if (status == Unconnected || status == Connecting || status == Disconnected)
+    if (status == Unconnected || status == Connecting || status == Disconnected) {
+        ui->label->setVisible(false);
         ui->menubar->setEnabled(false);
-    else
+        ui->label_2->setVisible(false);
+        ui->activeChannel->setVisible(false);
+        m_receivingChecklist->setVisible(false);
+    }
+    else {
+        ui->label->setVisible(true);
+        ui->label_2->setVisible(true);
         ui->menubar->setEnabled(true);
+        ui->activeChannel->setVisible(true);
+        m_receivingChecklist->setVisible(true);
+    }
 
     m_authForm->onConnectionChanged(status);
 }

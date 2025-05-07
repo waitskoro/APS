@@ -19,6 +19,8 @@ SOURCES += \
     view/connection/connectionlist.cpp \
     view/connection/delegate.cpp \
     view/loader.cpp \
+    view/main/receivingdelegate.cpp \
+    view/main/receivingсhecklist.cpp \
     view/mainwindow.cpp
 
 HEADERS += \
@@ -39,6 +41,8 @@ HEADERS += \
     view/connection/connectionlist.h \
     view/connection/delegate.h \
     view/loader.h \
+    view/main/receivingdelegate.h \
+    view/main/receivingсhecklist.h \
     view/mainwindow.h
 
 FORMS += \

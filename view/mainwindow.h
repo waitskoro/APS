@@ -16,6 +16,10 @@ namespace Commands::View {
 class TargetDesignationsV;
 }
 
+namespace Receiving::View {
+class ReceivingChecklist;
+}
+
 using namespace Commands::View;
 
 namespace Connection::View {
@@ -41,6 +45,8 @@ private:
     AuthForm *m_authForm;
     ConnectionManager *m_connectionManager;
     TargetDesignationsV *m_transferOfTargetV;
+
+    Receiving::View::ReceivingChecklist *m_receivingChecklist;
 
     void onConnectionChanged(ConnectionStatus status);
 };

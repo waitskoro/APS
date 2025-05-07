@@ -1,12 +1,9 @@
 #pragma once
 
 #include <QObject>
-
 #include <QStyledItemDelegate>
 
 namespace Connection::View {
-
-class DelegatePrivate;
 
 class Delegate : public QStyledItemDelegate
 {
