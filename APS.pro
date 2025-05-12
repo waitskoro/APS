@@ -31,7 +31,6 @@ HEADERS += \
     connection/connectioninfo.h \
     connection/connectionmanager.h \
     connection/enums.h \
-    connection/socket/itcpsocket.h \
     connection/socket/socketinfo.h \
     connection/socket/tcpsocket.h \
     connection/xmlparser.h \

@@ -1,27 +1,33 @@
 #pragma once
 
+#include <QUrl>
 #include <QObject>
+#include <QTcpSocket>
 
-#include "itcpsocket.h"
 #include "socketinfo.h"
 
 namespace Connection {
 
-class TcpSocket : public ITcpSocket
+class TcpSocket : public QObject
 {
     Q_OBJECT
 
 public:
-    TcpSocket();
+    explicit TcpSocket(QObject *parent = nullptr);
 
-    void readyRead() override;
-    void disconnect() override;
-    void connectToHost(const QUrl url) override;
+    void readyRead();
+    void disconnect();
+    void connectToHost(const QUrl url);
 
-    void send(QByteArray header, QByteArray msg) override;
+    void send(QByteArray header, QByteArray msg);
 
-    bool isConnected() override;
-    QAbstractSocket::SocketState state() override;
+    bool isConnected();
+    QAbstractSocket::SocketState state();
+
+signals:
+    void stateChanged();
+    void dataRecevied(Packet);
+    void errorOccured(QAbstractSocket::SocketError);
 
 private:
     QUrl m_url;

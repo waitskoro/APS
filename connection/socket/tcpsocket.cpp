@@ -8,8 +8,8 @@ namespace {
 
 using namespace Connection;
 
-TcpSocket::TcpSocket()
-    : ITcpSocket()
+TcpSocket::TcpSocket(QObject *parent)
+    : QObject(parent)
 {
     connect(&m_socket,
             &QTcpSocket::readyRead,
@@ -21,13 +21,13 @@ TcpSocket::TcpSocket()
             this,
             [this](QAbstractSocket::SocketState state){
                 qDebug() << "Socket state:" << state;
-                emit ITcpSocket::stateChanged();
+                emit stateChanged();
             });
 
     connect(&m_socket,
             &QTcpSocket::errorOccurred,
             this,
-            &ITcpSocket::errorOccured);
+            &TcpSocket::errorOccured);
 }
 
 void TcpSocket::readyRead()
