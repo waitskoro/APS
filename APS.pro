@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     connection/connectionmanager.cpp \
+    connection/socket/sequentialIdprovider.cpp \
     connection/socket/tcpsocket.cpp \
     connection/xmlparser.cpp \
     main.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     connection/connectioninfo.h \
     connection/connectionmanager.h \
     connection/enums.h \
+    connection/socket/sequentialIdprovider.h \
     connection/socket/socketinfo.h \
     connection/socket/tcpsocket.h \
     connection/xmlparser.h \

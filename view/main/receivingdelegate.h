@@ -26,7 +26,9 @@ private:
     void drawText(QPainter *painter, QRect rect, QRect textRect, QString &text) const;
 
     void drawLeftSide(QPainter *painter, QRect rect) const;
-    void drawRightSide(QPainter *painter, QRect rect) const;
+    void drawRightSide(QPainter *painter, QRect rect, const QModelIndex &index) const;
+    void drawSectorAzimut(QPainter *painter, QRect rect, const QModelIndex &index) const;
+    void drawCurrentAzimut(QPainter *painter, QRect rect, const QModelIndex &index) const;
 };
 
 }

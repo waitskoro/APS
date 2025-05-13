@@ -25,11 +25,6 @@ MainWindow::MainWindow(QWidget *parent)
     m_receivingChecklist->setStyleSheet("background-color: #F6F6F6");
     m_receivingChecklist->setVisible(false);
 
-    Receiving::ReceivingMessage msg;
-    m_receivingChecklist->addMessage(msg);
-    m_receivingChecklist->addMessage(msg);
-    m_receivingChecklist->addMessage(msg);
-
     ui->label->setVisible(false);
     ui->label_2->setVisible(false);
     ui->menubar->setEnabled(false);
@@ -59,6 +54,11 @@ MainWindow::MainWindow(QWidget *parent)
             &ConnectionManager::executedTheCommandRecevied,
             m_transferOfTargetV,
             &TargetDesignationsV::onExecutedTheCommandRecevied);
+
+    connect(m_connectionManager,
+            &ConnectionManager::receivingMessage,
+            m_receivingChecklist,
+            &ReceivingChecklist::addMessage);
 
     connect(m_transferOfTargetV,
             &TargetDesignationsV::sendTarget,
@@ -108,6 +108,7 @@ void MainWindow::on_exit_triggered()
 void MainWindow::on_transferOfTarget_triggered()
 {
     setEnabled(false);
+    m_transferOfTargetV->setEnabled(true);
     m_transferOfTargetV->show();
 }
 

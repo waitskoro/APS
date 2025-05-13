@@ -32,14 +32,18 @@ enum SocketType {
     P2
 };
 
-struct Packet {
-    explicit Packet(Header header, QByteArray data)
+struct  Packet {
+    Packet() {}
+
+    explicit Packet(Header header, QByteArray data, long long id)
         : header(header)
         , data(data)
+        , id(id)
     {}
 
     Header header;
     QByteArray data;
+    long long id;
 };
 
 }

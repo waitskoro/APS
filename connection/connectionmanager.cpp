@@ -13,8 +13,9 @@ ConnectionManager::ConnectionManager(QObject *parent)
     m_attemptCount(0),
     m_threadInitialized(false)
 {
-    moveToThread(m_thread);
-    QMetaObject::invokeMethod(this, &ConnectionManager::setupThread, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this,
+                              &ConnectionManager::setupThread,
+                              Qt::QueuedConnection);
 
     m_thread->start();
 }
@@ -39,21 +40,26 @@ void ConnectionManager::setupThread()
     m_socketAc = new TcpSocket();
     m_socketP2 = new TcpSocket();
 
+    m_socketAc->moveToThread(this->thread());
+    m_socketP2->moveToThread(this->thread());
+
     m_timeoutTimer = new QTimer();
     m_reconnectTimer = new QTimer();
 
     m_reconnectTimer->setInterval(2000);
     m_timeoutTimer->setInterval(10000);
 
-    connect(m_reconnectTimer, &QTimer::timeout, this, &ConnectionManager::attemptReconnect);
-    connect(m_timeoutTimer, &QTimer::timeout, this, &ConnectionManager::stopReconnecting);
+    connect(m_reconnectTimer,
+            &QTimer::timeout,
+            this,
+            &ConnectionManager::attemptReconnect);
+
+    connect(m_timeoutTimer,
+            &QTimer::timeout,
+            this,
+            &ConnectionManager::stopReconnecting);
 
     m_threadInitialized = true;
-
-    connect(m_socketAc,
-            &TcpSocket::dataRecevied,
-            this,
-            &ConnectionManager::onSocketAcPacketReceived);
 }
 
 void ConnectionManager::sendTargetDesign(TargetDesignations target)
@@ -105,6 +111,14 @@ void ConnectionManager::attemptConnect()
         stopReconnecting();
         emit stateChanged(Connected);
     }
+
+    connect(
+        m_socketAc,
+        &TcpSocket::msgReceived,
+        this,
+        &ConnectionManager::onSocketAcPacketReceived,
+        Qt::AutoConnection
+        );
 }
 
 void ConnectionManager::attemptReconnect()
@@ -142,13 +156,21 @@ void ConnectionManager::disconnect()
 
 void ConnectionManager::onSocketAcPacketReceived(Packet packet)
 {
-    if (packet.header.msg_type == 0x80) {
-        QDataStream stream(&packet.data, QIODevice::ReadOnly);
-        stream.setByteOrder(QDataStream::LittleEndian);
+    QDataStream stream(&packet.data, QIODevice::ReadOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
+    if (packet.header.msg_type == 0x80) {
         ExecutedTheCommand result;
         stream >> result;
-
         emit executedTheCommandRecevied(result);
+    }
+    else if (packet.header.msg_type == 0x81) {
+        Connection::RecieveState receiveState;
+        stream >> receiveState;
+
+        for (quint8 i = 0; i < receiveState.n; ++i) {
+            const auto& ch = receiveState.chanel_mas[i];
+            emit receivingMessage(ch);
+        }
     }
 }

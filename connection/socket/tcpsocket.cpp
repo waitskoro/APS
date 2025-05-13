@@ -1,85 +1,82 @@
 #include "tcpsocket.h"
 
-#include <QThread>
+#include "sequentialIdprovider.h"
 
-namespace {
-    qint32 headerSize = 12;
-}
+#include <QThread>
 
 using namespace Connection;
 
 TcpSocket::TcpSocket(QObject *parent)
     : QObject(parent)
+    , m_socket(new QTcpSocket())
 {
-    connect(&m_socket,
+    connect(m_socket,
             &QTcpSocket::readyRead,
             this,
-            &TcpSocket::readyRead);
-
-    connect(&m_socket,
-            &QTcpSocket::stateChanged,
-            this,
-            [this](QAbstractSocket::SocketState state){
-                qDebug() << "Socket state:" << state;
-                emit stateChanged();
-            });
-
-    connect(&m_socket,
-            &QTcpSocket::errorOccurred,
-            this,
-            &TcpSocket::errorOccured);
+            &TcpSocket::handleReadyRead);
 }
 
-void TcpSocket::readyRead()
+void TcpSocket::handleReadyRead()
 {
-    while(m_socket.bytesAvailable() >= headerSize) {
-        QByteArray headerBytes = m_socket.read(headerSize);
-        Header header = deserializeHeader(headerBytes);
+    auto socket = qobject_cast<QTcpSocket *>(sender());
+    Header header;
+    QByteArray header_bytes;
+    QByteArray msg_bytes;
 
-        QByteArray dataBytes = m_socket.read(header.countBytes);
-        Packet packet(header, dataBytes);
+    while(socket->bytesAvailable() >= m_headerSize) {
+        header_bytes = socket->read(m_headerSize);
+        header = deserializeHeader(header_bytes);
+        msg_bytes = socket->read(header.countBytes);
 
-        emit dataRecevied(packet);
+        auto &provider = SequentialIdProvider::get();
+        long long id = provider.next();
+        Packet packet(header, msg_bytes, id);
+
+        emit msgReceived(packet);
     }
 }
 
-void TcpSocket::connectToHost(const QUrl url)
+void TcpSocket::connectToHost(const QUrl& url)
 {
-    if (m_socket.isOpen())
-        m_socket.close();
+    if (m_socket->isOpen())
+        m_socket->close();
 
     m_url = url;
-    m_socket.connectToHost(m_url.host(), m_url.port(9999));
+    m_socket->connectToHost(m_url.host(), m_url.port(9999));
 }
 
-void TcpSocket::send(QByteArray header, QByteArray msg)
+void TcpSocket::send(const QByteArray& header, const QByteArray& msg)
 {
-    m_socket.write(header);
-    m_socket.write(msg);
+    m_socket->write(header);
+    m_socket->write(msg);
 }
 
-void TcpSocket::disconnect()
+void TcpSocket::disconnectFromHost()
 {
-    m_socket.close();
+    m_socket->close();
 }
 
-bool TcpSocket::isConnected()
+bool TcpSocket::isConnected() const
 {
-    return m_socket.state() == QAbstractSocket::SocketState::ConnectedState;
+    return m_socket->state() == QAbstractSocket::SocketState::ConnectedState;
 }
 
-QAbstractSocket::SocketState TcpSocket::state()
+QAbstractSocket::SocketState TcpSocket::state() const
 {
-    return m_socket.state();
+    return m_socket->state();
 }
 
-Header TcpSocket::deserializeHeader(QByteArray& data)
+Header TcpSocket::deserializeHeader(const QByteArray& data) const
 {
     Header header;
     QDataStream stream(data);
     stream.setByteOrder(QDataStream::LittleEndian);
 
-    stream >> header.version >> header.msg_type >> header.zero >> header.timeCreated >> header.countBytes;
+    stream >> header.version
+           >> header.msg_type
+           >> header.zero
+           >> header.timeCreated
+           >> header.countBytes;
 
     return header;
 }

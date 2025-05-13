@@ -2,7 +2,6 @@
 
 #include <QUrl>
 #include <QWidget>
-#include <QTcpSocket>
 
 #include "common/enums.h"
 #include "connection/connectionlist.h"
@@ -15,10 +14,6 @@ class IConnectionParameters;
 
 namespace Ui {
 class AuthForm;
-}
-
-namespace Connection::Socket {
-class ITcpSocket;
 }
 
 namespace Common::View {

@@ -15,27 +15,31 @@ class TcpSocket : public QObject
 public:
     explicit TcpSocket(QObject *parent = nullptr);
 
-    void readyRead();
-    void disconnect();
-    void connectToHost(const QUrl url);
+    void connectToHost(const QUrl& url);
+    void disconnectFromHost();
+    void send(const QByteArray& header, const QByteArray& msg);
 
-    void send(QByteArray header, QByteArray msg);
+    bool isConnected() const;
+    QAbstractSocket::SocketState state() const;
 
-    bool isConnected();
-    QAbstractSocket::SocketState state();
+private slots:
+    void handleReadyRead();
 
 signals:
-    void stateChanged();
-    void dataRecevied(Packet);
-    void errorOccured(QAbstractSocket::SocketError);
+    void msgReceived(const Packet& packet);
+    void errorOccurred(QAbstractSocket::SocketError error);
+    void connected();
+    void disconnected();
 
 private:
     QUrl m_url;
-    QTcpSocket m_socket;
+    QTcpSocket *m_socket;
 
-    Header deserializeHeader(QByteArray& data);
+    Header deserializeHeader(const QByteArray& data) const;
 
     void stateChanged(QAbstractSocket::SocketState);
+
+    qint32 m_headerSize = 16;
 };
 
 }

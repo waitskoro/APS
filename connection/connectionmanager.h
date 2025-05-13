@@ -29,6 +29,7 @@ private slots:
     void stopReconnecting();
 
 signals:
+    void receivingMessage(ReceivingMessage);
     void messageReady(QByteArray, QByteArray);
     void stateChanged(ConnectionStatus status);
     void executedTheCommandRecevied(ExecutedTheCommand result);
