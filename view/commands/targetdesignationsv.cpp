@@ -22,6 +22,9 @@ TargetDesignationsV::TargetDesignationsV(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->startDate->setDateTime(QDateTime::currentDateTime());
+    ui->endDate->setDateTime(QDateTime::currentDateTime());
+
     m_timeoutTimer->setInterval(10000);
 
     connect(m_timeoutTimer,
@@ -44,6 +47,19 @@ TargetDesignationsV::TargetDesignationsV(QWidget *parent)
     ui->coordinates->setModel(m_model);
 }
 
+void TargetDesignationsV::showWindow()
+{
+    m_model->clear();
+
+    show();
+
+    ui->centerFrequency->setText("");
+    ui->channelNumbers->setCurrentText("1");
+    ui->numberOfTheSpacecraft->setText("");
+    ui->currentAzimut->setText("");
+    ui->currentElevationAngle->setText("");
+}
+
 void TargetDesignationsV::on_back_clicked()
 {
     emit closedEvent();
@@ -62,8 +78,8 @@ void TargetDesignationsV::on_addAzimut_clicked()
 void TargetDesignationsV::on_createTarget_clicked()
 {
     // Проверка времени
-    QDateTime startTime = ui->startTime->dateTime();
-    QDateTime endTime = ui->endTime->dateTime();
+    QDateTime startTime = ui->startDate->dateTime();
+    QDateTime endTime = ui->endDate->dateTime();
 
     if (!startTime.isValid()) {
         QMessageBox::warning(this, "Ошибка", "Некорректный формат времени начала");
@@ -103,8 +119,8 @@ void TargetDesignationsV::on_createTarget_clicked()
 
     TargetDesignations m_info;
 
-    m_info.planStartTime = fromDateToDouble(ui->startTime->dateTime());
-    m_info.planEndTime = fromDateToDouble(ui->endTime->dateTime());
+    m_info.planStartTime = fromDateToDouble(ui->startDate->dateTime());
+    m_info.planEndTime = fromDateToDouble(ui->endDate->dateTime());
 
     auto data = ui->polarization->itemData(ui->polarization->currentIndex());
     m_info.directionOfPolarizaion = data.toInt();
@@ -131,6 +147,9 @@ void TargetDesignationsV::on_createTarget_clicked()
 
 void TargetDesignationsV::onExecutedTheCommandRecevied(Connection::ExecutedTheCommand result)
 {
+    if (!m_timeoutTimer->isActive())
+        return;
+
     m_loader->close();
     m_timeoutTimer->stop();
 

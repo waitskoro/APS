@@ -34,7 +34,7 @@ void ReceivingDelegate::paint(QPainter *painter,
 
     // Define rectangles
     QRect rect1 = innerRect.adjusted(20, 40, -300, -20);
-    QRect rect2 = innerRect.adjusted(400, 40, -20, -80);
+    QRect rect2 = innerRect.adjusted(400, 40, -20, -90);
     QRect rect3 = innerRect.adjusted(400, 140, -20, -20);
 
     // Draw rectangles
@@ -179,15 +179,17 @@ void ReceivingDelegate::drawSectorAzimut(QPainter *painter, QRect rect, const QM
     QString azimutEndSectorT = index.data(ReceivingChecklist::AzimutEndSector).toString();
     painter->drawText(azimutEndSector, Qt::AlignVCenter, azimutEndSectorT);
 
-    painter->drawLine(QLine(QPoint(azimutStart.x() - 5,
-                                   azimutStart.y() + azimutStart.height() / 2 + 2),
-                            QPoint(rect.width() + 25,
-                                   azimutEnd.y() + azimutEnd.height() / 2 + 2)));
+    int line1Y = rect.top() + rect.height()/2;
+    int line2Y = rect.top() + (2*rect.height())/2 + 50;
 
-    // painter->drawLine(QLine(QPoint(textRect.x() - 5,
-    //                                textRect.y() + textRect.height() / 2 + 2),
-    //                         QPoint(rect.width() + 25,
-    //                                textRect.y() + textRect.height() / 2 + 2)));
+    painter->drawLine(rect.left(), line1Y,
+                      rect.right(), line1Y);
+    painter->drawLine(rect.left(), line2Y,
+                      rect.right(), line2Y);
+
+    int leftLineX = rect.left() + 170;
+    painter->drawLine(leftLineX, rect.top() + 100, leftLineX, rect.bottom() + 71);
+    painter->drawLine(leftLineX, rect.top(), leftLineX, rect.bottom());
 }
 
 void ReceivingDelegate::drawCurrentAzimut(QPainter *painter, QRect rect, const QModelIndex &index) const

@@ -53,43 +53,6 @@
      <string>Состояния приема</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>60</y>
-      <width>301</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>12</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Количество активных каналов данных - 2</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="activeChannel">
-    <property name="geometry">
-     <rect>
-      <x>330</x>
-      <y>60</y>
-      <width>66</width>
-      <height>18</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">color: rgb(0, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>0</string>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -126,14 +89,14 @@
      <string>Команды</string>
     </property>
     <addaction name="transferOfTarget"/>
-    <addaction name="action_2"/>
+    <addaction name="stopMessages"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
      <string>Запросы</string>
     </property>
     <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="stateOfDataChannels"/>
    </widget>
    <widget class="QMenu" name="menu_3">
     <property name="font">
@@ -174,7 +137,7 @@
     </font>
    </property>
   </action>
-  <action name="action_2">
+  <action name="stopMessages">
    <property name="text">
     <string>    Остановка приема</string>
    </property>
@@ -194,7 +157,7 @@
     </font>
    </property>
   </action>
-  <action name="action_4">
+  <action name="stateOfDataChannels">
    <property name="text">
     <string>    Состояния каналов данных</string>
    </property>

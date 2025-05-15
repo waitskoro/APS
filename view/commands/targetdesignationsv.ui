@@ -397,7 +397,7 @@
     <rect>
      <x>150</x>
      <y>80</y>
-     <width>531</width>
+     <width>561</width>
      <height>191</height>
     </rect>
    </property>
@@ -520,9 +520,6 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="1">
-     <widget class="QDateEdit" name="startTime"/>
-    </item>
     <item row="2" column="2">
      <widget class="QLabel" name="label_7">
       <property name="font">
@@ -541,8 +538,29 @@
       </property>
      </widget>
     </item>
+    <item row="2" column="1">
+     <widget class="QDateTimeEdit" name="startDate">
+      <property name="time">
+       <time>
+        <hour>0</hour>
+        <minute>0</minute>
+        <second>0</second>
+       </time>
+      </property>
+      <property name="currentSection">
+       <enum>QDateTimeEdit::MonthSection</enum>
+      </property>
+      <property name="displayFormat">
+       <string>M/d/yy h:mm:ss AP</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="3">
-     <widget class="QDateEdit" name="endTime"/>
+     <widget class="QDateTimeEdit" name="endDate">
+      <property name="displayFormat">
+       <string>M/d/yy h:mm:ss AP</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

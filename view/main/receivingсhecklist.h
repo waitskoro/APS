@@ -26,6 +26,8 @@ public:
     };
 
     explicit ReceivingChecklist(QWidget *parent = nullptr);
+
+    void emptyMessages();
     void addMessage(Connection::ReceivingMessage);
 
 private:

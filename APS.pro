@@ -22,7 +22,9 @@ SOURCES += \
     view/loader.cpp \
     view/main/receivingdelegate.cpp \
     view/main/receivingсhecklist.cpp \
-    view/mainwindow.cpp
+    view/mainwindow.cpp \
+    view/requests/stateofdatachannels.cpp \
+    view/requests/stateofdatachannelsmodel.cpp
 
 HEADERS += \
     commands/targetdesignation/targetdesignationsinfo.h \
@@ -44,13 +46,16 @@ HEADERS += \
     view/loader.h \
     view/main/receivingdelegate.h \
     view/main/receivingсhecklist.h \
-    view/mainwindow.h
+    view/mainwindow.h \
+    view/requests/stateofdatachannels.h \
+    view/requests/stateofdatachannelsmodel.h
 
 FORMS += \
     view/authform.ui \
     view/commands/targetdesignationsv.ui \
     view/loader.ui \
     view/mainwindow.ui \
+    view/requests/stateofdatachannels.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

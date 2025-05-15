@@ -1,5 +1,7 @@
 #include "connectionmanager.h"
 
+#include <QDateTime>
+
 using namespace Commands;
 using namespace Connection;
 
@@ -18,6 +20,12 @@ ConnectionManager::ConnectionManager(QObject *parent)
                               Qt::QueuedConnection);
 
     m_thread->start();
+}
+
+double ConnectionManager::currentOADate() const
+{
+    QDateTime now = QDateTime::currentDateTime();
+    return double(now.toSecsSinceEpoch()) / double (86400) + 25569;
 }
 
 void ConnectionManager::cancel()
@@ -67,6 +75,7 @@ void ConnectionManager::sendTargetDesign(TargetDesignations target)
     Header header;
     header.msg_type = 0x01;
     header.countBytes = No_alignment_size::cel + 4 * target.count;
+    header.timeCreated = currentOADate();
 
     QByteArray header_bytes;
     QByteArray message_bytes;
@@ -75,6 +84,38 @@ void ConnectionManager::sendTargetDesign(TargetDesignations target)
     QDataStream stream(&message_bytes, QIODevice::WriteOnly);
     stream.setByteOrder(QDataStream::LittleEndian);
     stream << target;
+
+    m_socketAc->send(header_bytes, message_bytes);
+}
+
+void ConnectionManager::stopMessages()
+{
+    Header header;
+    header.msg_type = 0x02;
+    header.timeCreated = currentOADate();
+
+    QByteArray header_bytes;
+    QByteArray message_bytes;
+
+    header_bytes = header.serializeStruct();
+    QDataStream stream(&message_bytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
+
+    m_socketAc->send(header_bytes, message_bytes);
+}
+
+void ConnectionManager::requestStateOfData()
+{
+    Header header;
+    header.msg_type = 0x04;
+    header.timeCreated = currentOADate();
+
+    QByteArray header_bytes;
+    QByteArray message_bytes;
+
+    header_bytes = header.serializeStruct();
+    QDataStream stream(&message_bytes, QIODevice::WriteOnly);
+    stream.setByteOrder(QDataStream::LittleEndian);
 
     m_socketAc->send(header_bytes, message_bytes);
 }
@@ -164,7 +205,7 @@ void ConnectionManager::onSocketAcPacketReceived(Packet packet)
         stream >> result;
         emit executedTheCommandRecevied(result);
     }
-    else if (packet.header.msg_type == 0x81) {
+    if (packet.header.msg_type == 0x81) {
         Connection::RecieveState receiveState;
         stream >> receiveState;
 
@@ -172,5 +213,14 @@ void ConnectionManager::onSocketAcPacketReceived(Packet packet)
             const auto& ch = receiveState.chanel_mas[i];
             emit receivingMessage(ch);
         }
+
+        if (receiveState.n == 0) {
+            emit receivingMessageEmpty();
+        }
+    }
+    if (packet.header.msg_type == 0x84) {
+        Connection::DataChannelMessage dataChannelMsg;
+        stream >> dataChannelMsg;
+        emit dataChannelMessageReceived(dataChannelMsg);
     }
 }

@@ -34,7 +34,7 @@ class TargetDesignationsV : public QWidget
 public:
     explicit TargetDesignationsV(QWidget *parent = nullptr);
     ~TargetDesignationsV();
-
+    void showWindow();
     void onExecutedTheCommandRecevied(Connection::ExecutedTheCommand);
 
 signals:

@@ -22,7 +22,7 @@ ReceivingChecklist::ReceivingChecklist(QWidget *parent)
     connect(refreshTimer, &QTimer::timeout, this, [this]() {
         isNew = true;
     });
-    refreshTimer->start(2000);
+    refreshTimer->start(1500);
 }
 
 void ReceivingChecklist::addMessage(Connection::ReceivingMessage msg)
@@ -31,6 +31,8 @@ void ReceivingChecklist::addMessage(Connection::ReceivingMessage msg)
         static_cast<QStandardItemModel*>(model())->clear();
 
     isNew = false;
+
+    qDebug() << msg.spacecraftNumber;
 
     auto *item = new QStandardItem();
     item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
@@ -48,4 +50,9 @@ void ReceivingChecklist::addMessage(Connection::ReceivingMessage msg)
     item->setData(msg.azimutEndSector, AzimutEndSector);
 
     static_cast<QStandardItemModel *>(model())->appendRow(item);
+}
+
+void ReceivingChecklist::emptyMessages()
+{
+    static_cast<QStandardItemModel*>(model())->clear();
 }

@@ -13,6 +13,16 @@ void TargetDesignationModel::append(const std::array<short, 2>& newCoordinates)
     endInsertRows();
 }
 
+void TargetDesignationModel::clear()
+{
+    if (m_values.empty())
+        return;
+
+    beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
+    m_values.clear();
+    endRemoveRows();
+}
+
 void TargetDesignationModel::append(short azimuth, short elevation)
 {
     append({azimuth, elevation});

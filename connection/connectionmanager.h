@@ -7,7 +7,7 @@
 #include "common/enums.h"
 #include "socket/tcpsocket.h"
 #include "common/messagesinfo.h"
-#include "commands/targetdesignation//targetdesignationsinfo.h"
+#include "commands/targetdesignation/targetdesignationsinfo.h"
 
 namespace Connection {
 
@@ -21,6 +21,9 @@ public:
     void cancel();
     void disconnect();
     void connectToHost(const QUrl &ac, const QUrl &p2);
+
+    void stopMessages();
+    void requestStateOfData();
     void sendTargetDesign(Commands::TargetDesignations info);
 
 private slots:
@@ -29,10 +32,13 @@ private slots:
     void stopReconnecting();
 
 signals:
+    void requestStateOfDataSended();
+    void receivingMessageEmpty();
     void receivingMessage(ReceivingMessage);
     void messageReady(QByteArray, QByteArray);
     void stateChanged(ConnectionStatus status);
     void executedTheCommandRecevied(ExecutedTheCommand result);
+    void dataChannelMessageReceived(const DataChannelMessage& message);
 
 private:
     void setupThread();
@@ -52,6 +58,7 @@ private:
     bool m_threadInitialized;\
 
     void onSocketAcPacketReceived(Packet packet);
+    double currentOADate() const;
 };
 
 }
